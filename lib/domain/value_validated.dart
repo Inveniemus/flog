@@ -26,8 +26,19 @@ abstract class ValueValidated<T> {
 
   bool get isFailed => !isValid;
 
-  Failure get failure => _failure;
-  T get value => _validatedValue;
+  /// Failure getter, to be used only if value is failed, otherwise a
+  /// [ValueValidatedError] is thrown. Use isFailed before this getter.
+  Failure get failure {
+    if (isFailed) return _failure;
+    throw ValueValidatedError('failure getter called on a non failed value');
+  }
+
+  /// Value getter, to be used only if value is valid, otherwise a
+  /// [ValueValidatedError] is thrown. Use isValid before this getter.
+  T get value {
+    if (isValid) return _validatedValue;
+    throw ValueValidatedError('value getter called on a failed value.');
+  }
 
   void _processValidator() {
     final validatorResult = _validator.getFailureOrNull();
