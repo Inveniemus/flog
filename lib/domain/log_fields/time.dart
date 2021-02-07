@@ -8,8 +8,6 @@ class Time extends ValueValidated<String> {
   factory Time.format24(String value) {
     return Time._(value, TimeValidator(value));
   }
-
-    
 }
 
 class TimeValidator extends Validator<String> {
